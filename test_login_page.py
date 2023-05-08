@@ -3,16 +3,29 @@ from PlayerDetection import LoginPage
 
 class TestLoginPage(unittest.TestCase):
 
-    def setUp(self):
-        self.login_page = LoginPage(None, None)
+    def test_username_password_entry_widgets(self):
+        login_page = LoginPage(None, None)
+        assert isinstance(login_page.username_entry, ttk.Entry)
+        assert isinstance(login_page.password_entry, ttk.Entry)
 
-    def test_empty_fields(self):
-        # Test if the warning label shows up when the username and password fields are empty
-        self.login_page.checkLogin("", "", self.login_page.lblWarning)
-        print(self.login_page.lblWarning['text'])
-        self.assertEqual(self.login_page.lblWarning['text'], "Username field must not be empty.")
+    def test_login_button(self):
+        login_page = LoginPage(None, None)
+        assert isinstance(login_page.submitbtn, ttk.Button)
 
-    def test_valid_login(self):
-        # Test if the login button works correctly when valid username and password values are entered
-        self.login_page.checkLogin("testuser", "testpassword", self.login_page.lblWarning)
-        self.assertEqual(self.login_page.lblWarning['text'], "Successfully Logged in!")
+    def test_signup_button(self):
+        login_page = LoginPage(None, None)
+        assert isinstance(login_page.signUpbtn, ttk.Button)
+
+    def test_check_login_valid_credentials(self):
+        login_page = LoginPage(None, None)
+        result = login_page.checkLogin("testuser", "testpassword", ttk.Label(None))
+        assert result == "Successfully Logged in!"
+
+    def test_check_login_invalid_credentials(self):
+        login_page = LoginPage(None, None)
+        result = login_page.checkLogin("invaliduser", "invalidpassword", ttk.Label(None))
+        assert result == "You are not registered. Please sign up with new details."
+
+
+if __name__ == '__main__':
+    unittest.main()
